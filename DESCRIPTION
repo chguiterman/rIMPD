@@ -1,5 +1,5 @@
 Package: rIMPD
-Title: Explore Tree-Ring Fire Histories From The International Multiproxy Paleofire Database
+Title: Explore North American Fire-Scar Records From The International Multiproxy Paleofire Database
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Chris",
