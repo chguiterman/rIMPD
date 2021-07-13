@@ -14,10 +14,10 @@
 #' @param species Use four-letter codes for tree species
 #'
 #' @importFrom magrittr %>%
-#' @import httr
-#' @import jsonlite
-#' @import rlang
-#' @import glue
+#' @importFrom httr GET parse_url build_url user_agent http_type content
+#' @importFrom jsonlite fromJSON
+#' @importFrom rlang abort
+#' @importFrom glue glue
 #'
 #' @export
 #'
