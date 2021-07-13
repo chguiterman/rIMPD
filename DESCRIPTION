@@ -1,0 +1,24 @@
+Package: rIMPD
+Title: Explore Tree-Ring Fire Histories From The International Multiproxy Paleofire Database
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Chris",
+           family = "Guiterman",
+           role = c("aut", "cre"),
+           email = "chguiterman@arizona.edu",
+           comment = c(ORCID = "0000-0002-9706-9332"))
+Description: Tree-ring fire histories are shared publicly on the IMPD,
+    a web-based resource hosted by NOAA’s World Data Service for 
+    Paleoclimatology (WDS-Paleo). {rIMPD} enables fast and easy IMPD 
+    exploration via search calls to the IMPD API, thus requiring an 
+    internet connection to work. Search results return tidy metadata 
+    and raw tree-ring fire history data, which can be visualized and 
+    analyzed using the {burnr} R package.
+License: AGPL-3
+Suggests:
+    testthat
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+
