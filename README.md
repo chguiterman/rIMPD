@@ -4,6 +4,9 @@
 # rIMPD
 
 <!-- badges: start -->
+
+[![R build
+status](https://github.com/chguiterman/rIMPD/workflows/R-CMD-check/badge.svg)](https://github.com/chguiterman/rIMPD/actions)
 <!-- badges: end -->
 
 The goal of rIMPD is to enable fast and easy exploration of
