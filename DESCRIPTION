@@ -14,6 +14,8 @@ Description: Tree-ring fire histories are shared publicly on the IMPD,
     internet connection to work. Search results return tidy metadata 
     and raw tree-ring fire history data, which can be visualized and 
     analyzed using the {burnr} R package.
+URL: https://github.com/chguiterman/rIMPD
+BugReports: https://github.com/chguiterman/rIMPD/issues
 License: AGPL-3
 Suggests:
     testthat
