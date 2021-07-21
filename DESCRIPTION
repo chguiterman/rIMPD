@@ -22,6 +22,7 @@ Suggests:
     knitr,
     rmarkdown
 Imports:
+    burnr,
     dplyr,
     magrittr,
     glue,
