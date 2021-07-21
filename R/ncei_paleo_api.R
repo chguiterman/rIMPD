@@ -1,8 +1,10 @@
-#' Search the NCEI Paleo API for IMPD records
+#' IMPD records search
 #'
-#' Query the IMPD for fire-scar records based on search parameters
+#' Query the IMPD for North American tree-ring fire-scar records
 #'
-#' @param investigators Name of investigator listed by the IMPD
+#' @param investigators Name of investigator listed by the IMPD. The format can
+#'   look like "Swetnam", "Swetnam, T", or "Swetnam, T.W.".  See
+#'   [get_search_params("investigators")] for a list potential names
 #' @param minLat Minimum latitude of sites, in decimal degrees (WGS84)
 #' @param maxLat Maximum latitude of sites, in decimal degrees (WGS84)
 #' @param minLon Minimum longitude of sites, in decimal degrees (WGS84)
@@ -11,13 +13,16 @@
 #' @param maxElev Maximum elevation of sites, in meters
 #' @param earliestYear In calendar years CE (use negative for BCE)
 #' @param latestYear In calendar years CE (use negative for BCE)
-#' @param species Use four-letter codes for tree species
+#' @param species Four-letter species code for tree species. See
+#'   [get_search_params("species")] for a data frame of Latin names and codes
 #'
 #' @importFrom magrittr %>%
 #' @importFrom httr GET parse_url build_url user_agent http_type content
 #' @importFrom jsonlite fromJSON
 #' @importFrom rlang abort
 #' @importFrom glue glue
+#'
+#' @seealso [get_search_params()]
 #'
 #' @export
 #'
