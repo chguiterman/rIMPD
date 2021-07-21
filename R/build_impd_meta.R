@@ -20,7 +20,8 @@
 
 
 build_impd_meta <- function(api) {
-  if (attr(api, "rIMPD") != "ncei_api") {
+  if (! "rIMPD" %in% names(attributes(api)) ||
+      attr(api, "rIMPD") != "ncei_api") {
     stop("The input data are incorrect. They must be a JSON from the NCEI API")
   }
 
