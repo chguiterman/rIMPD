@@ -25,7 +25,7 @@
 #' @export
 #' @examples
 #' fsr <- get_impd_fhx("USFSR001")
-#' burnr::plot(fsr)
+#' burnr::plot_demograph(fsr)
 
 
 get_impd_fhx <- function(studyCode) {
