@@ -24,8 +24,12 @@
 #'
 #' @export
 #' @examples
+#' ## Not run:
+#' \dontrun{
 #' fsr <- get_impd_fhx("USFSR001")
 #' burnr::plot_demograph(fsr)
+#' }
+#' ## End (Not run)
 
 
 get_impd_fhx <- function(studyCode) {

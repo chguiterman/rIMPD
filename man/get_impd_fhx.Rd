@@ -30,6 +30,10 @@ code. Use loops, or \code{purrr}-style iterative calls to expedite the retrieval
 of multiple files.
 }
 \examples{
+## Not run:
+\dontrun{
 fsr <- get_impd_fhx("USFSR001")
 burnr::plot_demograph(fsr)
+}
+## End (Not run)
 }
