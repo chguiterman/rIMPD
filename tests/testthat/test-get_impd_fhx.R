@@ -1,6 +1,6 @@
 
 test_that("`get_impd_fhx()` returns an FHX object", {
-  expect_s3_class(get_impd_fhx("USFSR001"), "fhx")
+  expect_s3_class(get_impd_fhx("ca124001"), "fhx")
 })
 
 test_that("`get_impd_fhx()` errors on >1 study code", {
