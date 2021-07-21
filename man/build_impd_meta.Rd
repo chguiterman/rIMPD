@@ -7,13 +7,13 @@
 build_impd_meta(api)
 }
 \arguments{
-\item{api}{Resulting object from \code{\link[=search_ncei_paleo_api]{search_ncei_paleo_api()}}}
+\item{api}{Resulting object from \code{\link[=ncei_paleo_api]{ncei_paleo_api()}}}
 }
 \description{
 This function extracts desired information form the search results to the
 IMPD and returns a tidy data frame of the results
 }
 \examples{
-api <- search_ncei_paleo_api("Swetnam")
+api <- ncei_paleo_api("Swetnam")
 meta <- build_impd_meta(api)
 }
