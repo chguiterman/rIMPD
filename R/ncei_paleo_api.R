@@ -23,9 +23,9 @@
 #'
 #' @examples
 #' # Search the IMPD for Tom Swetnam's contributions
-#' swetnam_search <- search_ncei_paleo_api(investigators = "Swetnam")
+#' swetnam_search <- ncei_paleo_api(investigators = "Swetnam")
 
-search_ncei_paleo_api <- function(investigators = NULL,
+ncei_paleo_api <- function(investigators = NULL,
                                   minLat = NULL,
                                   maxLat = NULL,
                                   minLon = NULL,
