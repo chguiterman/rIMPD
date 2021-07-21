@@ -3,7 +3,7 @@
 #' This function extracts desired information form the search results to the
 #' IMPD and returns a tidy data frame of the results
 #'
-#' @param api Resulting object from [search_ncei_paleo_api()]
+#' @param api Resulting object from [ncei_paleo_api()]
 #'
 #' @importFrom magrittr %>%
 #' @importFrom rlang .data
@@ -15,7 +15,7 @@
 #'
 #' @export
 #' @examples
-#' api <- search_ncei_paleo_api("Swetnam")
+#' api <- ncei_paleo_api("Swetnam")
 #' meta <- build_impd_meta(api)
 
 
