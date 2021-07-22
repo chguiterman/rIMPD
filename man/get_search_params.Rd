@@ -7,11 +7,18 @@
 get_search_params(output = c("investigators", "species"))
 }
 \arguments{
-\item{output}{Two data sets are available, "investigators" (the default) and "species"}
+\item{output}{Two data sets are available, "investigators" (the default) and
+"species"}
 }
 \description{
-This function pulls form the updated store of contributor names and species
-to help users specify their searches
+This function pulls from the updated store of contributor names and species
+to help users specify their searches.
+}
+\note{
+The list of investigators names also includes those who have
+contributed to the charcoal and pollen databases of the IMPD. Some names
+may not generate search results here because \code{rIMPD} specifies tree-ring
+records.
 }
 \examples{
 # Retrieve the list of IMPD contributors
