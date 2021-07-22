@@ -1,9 +1,15 @@
 #' Extract IMPD search parameters for `investigators` and `species`
 #'
-#' This function pulls form the updated store of contributor names and species
-#' to help users specify their searches
+#' This function pulls from the updated store of contributor names and species
+#' to help users specify their searches.
 #'
-#' @param output Two data sets are available, "investigators" (the default) and "species"
+#' @param output Two data sets are available, "investigators" (the default) and
+#'   "species"
+#'
+#' @note The list of investigators names also includes those who have
+#'   contributed to the charcoal and pollen databases of the IMPD. Some names
+#'   may not generate search results here because `rIMPD` specifies tree-ring
+#'   records.
 #'
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
