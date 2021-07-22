@@ -20,7 +20,7 @@ ncei_paleo_api(
 \arguments{
 \item{investigators}{Name of investigator listed by the IMPD. The format can
 look like "Swetnam", "Swetnam, T", or "Swetnam, T.W.".  See
-\link{get_search_params("investigators")} for a list potential names}
+\code{\link[=get_search_params]{get_search_params()}} for a list potential names}
 
 \item{minLat}{Minimum latitude of sites, in decimal degrees (WGS84)}
 
@@ -39,7 +39,7 @@ look like "Swetnam", "Swetnam, T", or "Swetnam, T.W.".  See
 \item{latestYear}{In calendar years CE (use negative for BCE)}
 
 \item{species}{Four-letter species code for tree species. See
-\link{get_search_params("species")} for a data frame of Latin names and codes}
+\code{\link[=get_search_params]{get_search_params()}} for a data frame of Latin names and codes}
 }
 \description{
 Query the IMPD for North American tree-ring fire-scar records

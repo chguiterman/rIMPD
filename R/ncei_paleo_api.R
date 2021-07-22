@@ -4,7 +4,7 @@
 #'
 #' @param investigators Name of investigator listed by the IMPD. The format can
 #'   look like "Swetnam", "Swetnam, T", or "Swetnam, T.W.".  See
-#'   [get_search_params("investigators")] for a list potential names
+#'   [get_search_params()] for a list potential names
 #' @param minLat Minimum latitude of sites, in decimal degrees (WGS84)
 #' @param maxLat Maximum latitude of sites, in decimal degrees (WGS84)
 #' @param minLon Minimum longitude of sites, in decimal degrees (WGS84)
@@ -14,7 +14,7 @@
 #' @param earliestYear In calendar years CE (use negative for BCE)
 #' @param latestYear In calendar years CE (use negative for BCE)
 #' @param species Four-letter species code for tree species. See
-#'   [get_search_params("species")] for a data frame of Latin names and codes
+#'   [get_search_params()] for a data frame of Latin names and codes
 #'
 #' @importFrom magrittr %>%
 #' @importFrom httr GET parse_url build_url user_agent http_type content

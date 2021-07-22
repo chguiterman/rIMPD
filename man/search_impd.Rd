@@ -20,7 +20,7 @@ search_impd(
 \arguments{
 \item{investigators}{Name of investigator listed by the IMPD. The format can
 look like "Swetnam", "Swetnam, T", or "Swetnam, T.W.".  See
-\link{get_search_params("investigators")} for a list potential names}
+\code{\link[=get_search_params]{get_search_params()}} for a list potential names}
 
 \item{minLat}{Minimum latitude of sites, in decimal degrees (WGS84)}
 
@@ -39,10 +39,10 @@ look like "Swetnam", "Swetnam, T", or "Swetnam, T.W.".  See
 \item{latestYear}{In calendar years CE (use negative for BCE)}
 
 \item{species}{Four-letter species code for tree species. See
-\link{get_search_params("species")} for a data frame of Latin names and codes}
+\code{\link[=get_search_params]{get_search_params()}} for a data frame of Latin names and codes}
 }
 \value{
-A data frame of search results form the North American IMPD
+A data frame of search results from the North American IMPD
 }
 \description{
 This function provides a means for fast and efficient searches of the North
