@@ -7,8 +7,6 @@
 
 [![R build
 status](https://github.com/chguiterman/rIMPD/workflows/R-CMD-check/badge.svg)](https://github.com/chguiterman/rIMPD/actions)
-[![Coverage
-Status](https://coveralls.io/repos/github/chguiterman/rIMPD/badge.svg?branch=main)](https://coveralls.io/github/chguiterman/rIMPD?branch=main)
 <!-- badges: end -->
 
 The goal of rIMPD is to enable fast and easy exploration of
