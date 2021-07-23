@@ -13,7 +13,9 @@
 #'
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
-#' @importFrom readr read_delim
+#' @importFrom stringr str_split
+#' @importFrom tibble as_tibble
+#' @importFrom stats setNames
 #'
 #' @export
 #'
@@ -31,14 +33,12 @@ get_search_params <- function(output = c("investigators", "species")) {
                      simplifyDataFrame = TRUE)
 
   investigators <- params[["investigators"]][["NOAA"]][["12"]]
-  species_list <- params[["species"]][["NOAA"]][["12"]]
-  species_df <- read_delim(species_list, delim = ":",
-                           col_names = c("species", "spp_code"))
+  species_list <- str_split(params[["species"]][["NOAA"]][["12"]], ":")
+  species_df <- do.call(rbind, species_list) %>%
+    as_tibble(.name_repair = "minimal") %>%
+    setNames(c("species", "spp_code"))
 
   output <- match.arg(output)
-  # switch(output,
-  #        investigators = "investigators",
-  #        species = "species")
 
   if (output == "investigators") {
     out <- investigators
