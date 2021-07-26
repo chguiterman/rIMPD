@@ -17,6 +17,8 @@ Description: Tree-ring fire histories are shared publicly on the IMPD,
 URL: https://github.com/chguiterman/rIMPD
 BugReports: https://github.com/chguiterman/rIMPD/issues
 License: AGPL-3
+Depends:
+    R (>= 4.0)
 Suggests:
     testthat,
     knitr,
