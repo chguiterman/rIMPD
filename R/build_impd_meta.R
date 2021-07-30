@@ -31,21 +31,27 @@ build_impd_meta <- function(api) {
   # Build initial data frame
   out_df <- in_list %>%
     transmute(.data$uuid,
-              .data$NOAAStudyId,
-              .data$NOAASiteId,
               .data$siteName,
               .data$studyCode,
               .data$investigators,
               first_year = .data$earliestYearCE,
-              last_year = .data$mostRecentYearCE,
+              last_year = .data$mostRecentYearCE
+    )
+  out_noaa_params <- in_list %>%
+    transmute(.data$uuid,
               .data$doi,
-              contr_year = year(.data$contributionDate))
+              contr_year = year(.data$contributionDate),
+              .data$NOAAStudyId,
+              .data$NOAASiteId,
+              url = .data$onlineResourceLink
+    )
   # Extract Lat-Long coordinates
   out_coords <- out_df %>%
     select(.data$uuid) %>%
     mutate(coords = pluck(in_list, "geo", "geometry", "coordinates"),
-           Latitude = map_dbl(.data$coords, ~ as.numeric(.x[1])),
-           Longitude = map_dbl(.data$coords, ~ as.numeric(.x[2]))
+           latitude = map_dbl(.data$coords, ~ as.numeric(.x[1])),
+           longitude = map_dbl(.data$coords, ~ as.numeric(.x[2])),
+           elevation = pluck(in_list, "geo", "properties", "minElevationMeters")
     ) %>%
     select(- .data$coords)
 
@@ -72,7 +78,9 @@ build_impd_meta <- function(api) {
   out_df <- out_df %>%
     left_join(out_coords, by = "uuid") %>%
     left_join(out_spp, by = "uuid") %>%
-    left_join(out_pub, by = "uuid")
+    left_join(out_pub, by = "uuid") %>%
+    left_join(out_noaa_params, by = "uuid") %>%
+    select(- .data$uuid)
 
   attr(out_df, "rIMPD") <- "impd_meta"
   out_df

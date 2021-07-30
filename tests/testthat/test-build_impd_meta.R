@@ -15,9 +15,10 @@ test_that("Builds a tibble", {
 
 test_that("Names are correct", {
   expect_named(meta,
-               c("uuid", "NOAAStudyId", "NOAASiteId", "siteName", "studyCode",
-                 "investigators", "first_year", "last_year", "doi", "contr_year",
-                 "Latitude", "Longitude", "species", "reference"))
+               c("siteName", "studyCode","investigators", "first_year",
+                 "last_year", "latitude", "longitude", "elevation",
+                 "species", "reference", "doi", "contr_year",
+                 "NOAAStudyId", "NOAASiteId", "url"))
 })
 
 test_that("Error catch is robust", {
