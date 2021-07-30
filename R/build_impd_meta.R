@@ -51,7 +51,7 @@ build_impd_meta <- function(api) {
     mutate(coords = pluck(in_list, "geo", "geometry", "coordinates"),
            latitude = map_dbl(.data$coords, ~ as.numeric(.x[1])),
            longitude = map_dbl(.data$coords, ~ as.numeric(.x[2])),
-           elevation = pluck(in_list, "geo", "properties", "minElevationMeters")
+           elevation = as.numeric(pluck(in_list, "geo", "properties", "minElevationMeters"))
     ) %>%
     select(- .data$coords)
 
