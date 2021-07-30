@@ -10,7 +10,7 @@ test_that("Returns a data frame", {
 
 test_that("Species are correct", {
   quga_in_search <- str_extract_all(quga_search$species, "QUGA")
-  expect_gte(length(quga_in_search), 5)
+  expect_gte(length(quga_in_search), 4)
 })
 
 test_that("Investigators are correct", {
