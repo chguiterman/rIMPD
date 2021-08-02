@@ -11,10 +11,10 @@
 #' @param maxLon Maximum longitude of sites, in decimal degrees (WGS84)
 #' @param minElev Minimum elevation of sites, in meters
 #' @param maxElev Maximum elevation of sites, in meters
-#' @param earliestYear In calendar years CE (use negative for BCE)
-#' @param latestYear In calendar years CE (use negative for BCE)
+#' @param earliestYear Lower dated bound of sites. Use calendar years CE (negative for BCE)
+#' @param latestYear Upper dated bound of sites. Use calendar years CE (negative for BCE)
 #' @param species Four-letter species code for tree species. See
-#'   [get_search_params()] for a data frame of Latin names and codes
+#'   [get_search_params()] to find the proper code
 #'
 #' @importFrom magrittr %>%
 #' @importFrom httr GET parse_url build_url user_agent http_type content
@@ -47,6 +47,8 @@ ncei_paleo_api <- function(investigators = NULL,
                    dataTypeId = "12",
                    locations = "Continent>North America",
                    searchText = ".fhx",
+                   timeMethod = "entireOver",
+                   timeFormat = "CE",
                    investigators = investigators,
                    minLat = minLat,
                    maxLat = maxLat,
