@@ -34,12 +34,12 @@ look like "Swetnam", "Swetnam, T", or "Swetnam, T.W.".  See
 
 \item{maxElev}{Maximum elevation of sites, in meters}
 
-\item{earliestYear}{In calendar years CE (use negative for BCE)}
+\item{earliestYear}{Lower dated bound of sites. Use calendar years CE (negative for BCE)}
 
-\item{latestYear}{In calendar years CE (use negative for BCE)}
+\item{latestYear}{Upper dated bound of sites. Use calendar years CE (negative for BCE)}
 
 \item{species}{Four-letter species code for tree species. See
-\code{\link[=get_search_params]{get_search_params()}} for a data frame of Latin names and codes}
+\code{\link[=get_search_params]{get_search_params()}} to find the proper code}
 }
 \value{
 A data frame of search results from the North American IMPD
