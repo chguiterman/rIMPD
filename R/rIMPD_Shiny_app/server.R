@@ -66,7 +66,7 @@ server <- function(input, output, session) {
 
   search_meta <- reactive({
     if (input$search_button) {
-      build_impd_meta(impd_api_result())
+      return(build_impd_meta(impd_api_result()))
     }
     if (input$useDemoData) {
       return(rIMPD::quga_dat %>%
