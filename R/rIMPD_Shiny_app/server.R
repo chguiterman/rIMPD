@@ -3,6 +3,7 @@ library(tidyr)
 library(purrr)
 library(burnr)
 library(zip)
+library(ggplot2)
 
 
 
@@ -227,26 +228,97 @@ server <- function(input, output, session) {
       mutate(type = "Tree")
   })
 
+ # Create composites
+  fhx_comps <- reactive({
+    if (input$plot_composite_on) {
+      plot_FHX_df %>%
+        mutate(COMP = map2(FHX, studyCode,
+                           ~ composite(.x,
+                                       comp_name = .y))
+               ) %>%
+        select(COMP) %>%
+        unnest(cols = COMP) %>%
+        as_fhx()
+    }
+  })
+  plot_comp_meta <- eventReactive(fhx_comps(), {
+    plot_FHX_meta() %>%
+      group_by(studyCode) %>%
+      summarize(series = studyCode,
+                type = "Composite")
+  })
+
+  ## TODO -- combine comp meta and tree meta for facets
  # build fhx object to plot
   fhx_obj <- reactive({
-    plot_FHX_df() %>%
+    x <- plot_FHX_df() %>%
       select(FHX) %>%
       unnest(cols = FHX) %>%
-      as_fhx()
+      as_fhx()  ## Add sorting here??
+    if (any(
+      input$plot_sorting %in% c("first_year",
+                                  "last_year")
+    )) {
+      x <- sort(x, sort_by = input$plot_sorting,
+                decreasing = input$sort_decrease)
+    }
+    return(x)
+  })
+
+  ## plot parameters
+
+  # X-axis years
+  observe({
+    new_min <- round(min(fhx_obj()$year), -1)
+    new_max <- round(max(fhx_obj()$year), -1)
+    updateSliderInput(session = session,
+                      inputId = "plot_yr_range",
+                      min = new_min,
+                      max = new_max,
+                      value = c(new_min, new_max)
+    )
   })
 
  # Plot results
   output$fire_graphics <- renderPlot({
     req(fhx_obj())
     if (input$facetPlot == "single_plot") {
-      p <-  plot_demograph(fhx_obj())
+      p <-  plot_demograph(fhx_obj(),
+                           ylabels = ! input$plot_removeY,
+                           plot_legend = input$plot_legend,
+                           composite_rug = input$plot_composite_on
+                           )
     }
     if (input$facetPlot == "facet_plot") {
       p <- plot_demograph(fhx_obj(),
                           facet_group = plot_FHX_meta()$siteName,
-                          facet_id = plot_FHX_meta()$series)
+                          facet_id = plot_FHX_meta()$series,
+                          ylabels = ! input$plot_removeY,
+                          plot_legend = input$plot_legend
+                          )
     }
-    p
+    p +
+      scale_x_continuous(limits = c(input$plot_yr_range[1],
+                                    input$plot_yr_range[2]),
+                           breaks = seq(min(pretty(fhx_obj()$year)),
+                                        max(pretty(fhx_obj()$year)),
+                                        50),
+                         sec.axis=dup_axis(name=''),
+                         minor_breaks = seq(min(pretty(fhx_obj()$year)),
+                                            max(pretty(fhx_obj()$year)),
+                                            50),
+                         expand = c(0, 0)) +
+      theme(text = element_text(size=18)) +
+      theme(axis.line = element_line(color = "black"),
+            axis.ticks.x = element_line(unit(5, "points"), color = "black"),
+            panel.grid.major.x = element_line(color = "grey70"),
+            panel.grid.minor.x = element_line(color = "grey85"),
+            legend.title = element_blank(),
+            # legend.margin = margin(c(5, 5, 5, 0)),
+            legend.text = element_text(margin = margin(l = 0,
+                                                       r = 0,
+                                                       unit = "pt"))
+      )
   })
 
 

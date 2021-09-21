@@ -15,7 +15,7 @@ library(shinyWidgets)
 ui <- navbarPage(
     title = "rIMPD",
     id = "navbar",
-    # 1st tab ----
+    # 1st tab -- Search IMPD ----
     tabPanel(title = "Search the IMPD", value="tab1",
              sidebarLayout(
                  sidebarPanel(
@@ -102,7 +102,7 @@ ui <- navbarPage(
                  )
              )
     ),
-    # 2nd tab ----
+    # 2nd page -- Get FHX data ----
     tabPanel(title = "Retrieve FHX files", value = "tab2",
              fluidPage(
                  fluidRow(
@@ -141,7 +141,7 @@ ui <- navbarPage(
                  )
              ) # end-fluidpage
     ),
-    # 3rd tab ----
+    # 3rd page -- Fire history graphics ----
     tabPanel(title = "Graphics", value = "tab3",
              sidebarLayout(
                      sidebarPanel(
@@ -162,7 +162,46 @@ ui <- navbarPage(
                                        label = "Plot all sites togther or in separate panels?",
                                        choices = c("One panel" = "single_plot",
                                                    "Multi-panel" = "facet_plot"),
-                                       selected = "single_plot")
+                                       selected = "single_plot"),
+                         # Remove y-axis labels
+                         checkboxInput(inputId="plot_removeY",
+                                       label="Remove tree ID labels",
+                                       value=FALSE),
+                         # Resort series
+                         fluidRow(
+                             column(6,
+                                    radioButtons(inputId = "plot_sorting",
+                                                 label = "Re-order trees by",
+                                                 choiceNames = c("First year",
+                                                                 "Last year"),
+                                                 choiceValues = c("first_year",
+                                                                  "last_year"),
+                                                 selected = character(0))
+                             ),
+                             column(6,
+                                    checkboxInput(inputId = "sort_decrease",
+                                                  label = "Decreasing order",
+                                                  value = FALSE)
+                             )
+                         ),
+                         # Add composite
+                         checkboxInput(inputId = "plot_composite_on",
+                                       label = "Add plot composite",
+                                       value = FALSE),
+                         # Show legend?
+                         checkboxInput(inputId="plot_legend",
+                                       label="Show plot legend",
+                                       value=FALSE),
+                         # X-axis range
+                         sliderInput(
+                             inputId = "plot_yr_range",
+                             label = "Year range (X-axis)",
+                             min = 1600,
+                             max = 2000,
+                             value = c(1600, 2000),
+                             step = 10,
+                             round = 10,
+                             timeFormat = '%Y')
                      ),
                  mainPanel(
                      plotOutput("fire_graphics",
