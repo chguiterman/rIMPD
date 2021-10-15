@@ -4,21 +4,22 @@
 \alias{get_search_params}
 \title{Extract IMPD search parameters for \code{investigators} and \code{species}}
 \usage{
-get_search_params(output = c("investigators", "species"))
+get_search_params(output = c("investigators", "location", "species"))
 }
 \arguments{
-\item{output}{Two data sets are available, "investigators" (the default) and
-"species"}
+\item{output}{Three data sets are available: "investigators" (the default),
+"location", and "species"}
 }
 \description{
-This function pulls from the updated store of contributor names and species
-to help users specify their searches.
+Retrieve the updated store of contributor names, site locations, and tree
+species to help specify IMPD searches.
 }
 \note{
 The list of investigators names also includes those who have
 contributed to the charcoal and pollen databases of the IMPD. Some names
 may not generate search results here because \code{rIMPD} specifies tree-ring
-records.
+records. Also, apologies to Canadians for using "state" as a
+variable name in the output for "location"
 }
 \examples{
 # Retrieve the list of IMPD contributors
