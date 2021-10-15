@@ -5,14 +5,20 @@
 #' @param investigators Name of investigator listed by the IMPD. The format can
 #'   look like "Swetnam", "Swetnam, T", or "Swetnam, T.W.".  See
 #'   [get_search_params()] for a list potential names
+#' @param location The country or state/province of sites. Entries require
+#'   proper spelling, for example, use "Quebec" or "United States Of America"
+#'   and not "arizona". Not all localities are available; check
+#'   [get_search_params()] for availability of your place of interest.
 #' @param minLat Minimum latitude of sites, in decimal degrees (WGS84)
 #' @param maxLat Maximum latitude of sites, in decimal degrees (WGS84)
 #' @param minLon Minimum longitude of sites, in decimal degrees (WGS84)
 #' @param maxLon Maximum longitude of sites, in decimal degrees (WGS84)
 #' @param minElev Minimum elevation of sites, in meters
 #' @param maxElev Maximum elevation of sites, in meters
-#' @param earliestYear Lower dated bound of sites. Use calendar years CE (negative for BCE)
-#' @param latestYear Upper dated bound of sites. Use calendar years CE (negative for BCE)
+#' @param earliestYear Lower dated bound of sites. Use calendar years CE
+#'   (negative for BCE)
+#' @param latestYear Upper dated bound of sites. Use calendar years CE (negative
+#'   for BCE)
 #' @param species Four-letter species code for tree species. See
 #'   [get_search_params()] to find the proper code
 #'
@@ -31,24 +37,44 @@
 #' swetnam_search <- ncei_paleo_api(investigators = "Swetnam")
 
 ncei_paleo_api <- function(investigators = NULL,
-                                  minLat = NULL,
-                                  maxLat = NULL,
-                                  minLon = NULL,
-                                  maxLon = NULL,
-                                  minElev = NULL,
-                                  maxElev = NULL,
-                                  earliestYear = NULL,
-                                  latestYear = NULL,
-                                  species = NULL) {
+                           location = NULL,
+                           minLat = NULL,
+                           maxLat = NULL,
+                           minLon = NULL,
+                           maxLon = NULL,
+                           minElev = NULL,
+                           maxElev = NULL,
+                           earliestYear = NULL,
+                           latestYear = NULL,
+                           species = NULL) {
+  if (is.null(location)) {
+    locations <- "Continent>North America"
+  }
+  else {
+    loc_df <- get_search_params("location")
+    pos <- which(loc_df == location, arr.ind = TRUE)
+    if (length(pos) == 0) {
+      abort(
+      glue("Location entry did not match IMPD search parameters or
+      available locations. See the help menu for guidance"))
+    }
+    if (any(pos[, 2] == 1)) {
+      locations <- glue("Continent>North America>{location}")
+    }
+    if (any(pos[, 2] == 2)) {
+      cs <- loc_df[pos[1], ]
+      locations <- glue("Continent>North America>{cs[[1]]}>{cs[[2]]}")
+    }
+  }
   url <- parse_url("https://www.ncdc.noaa.gov/paleo-search/study/search.json")
   url$scheme = "https"
   url$query = list(metadataOnly="true",
                    dataPublisher = "NOAA",
                    dataTypeId = "12",
-                   locations = "Continent>North America",
                    searchText = ".fhx",
                    timeMethod = "entireOver",
                    timeFormat = "CE",
+                   locations = locations,
                    investigators = investigators,
                    minLat = minLat,
                    maxLat = maxLat,

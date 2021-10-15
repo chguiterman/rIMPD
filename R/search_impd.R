@@ -19,6 +19,7 @@
 #' search_impd(species = "QUGA")
 
 search_impd <- function(investigators = NULL,
+                        location = NULL,
                         minLat = NULL,
                         maxLat = NULL,
                         minLon = NULL,
@@ -29,6 +30,7 @@ search_impd <- function(investigators = NULL,
                         latestYear = NULL,
                         species = NULL) {
   ncei_paleo_api(investigators = investigators,
+                 location = location,
                  minLat = minLat,
                  maxLat = maxLat,
                  minLon = minLon,

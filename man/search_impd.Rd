@@ -6,6 +6,7 @@
 \usage{
 search_impd(
   investigators = NULL,
+  location = NULL,
   minLat = NULL,
   maxLat = NULL,
   minLon = NULL,
@@ -22,6 +23,11 @@ search_impd(
 look like "Swetnam", "Swetnam, T", or "Swetnam, T.W.".  See
 \code{\link[=get_search_params]{get_search_params()}} for a list potential names}
 
+\item{location}{The country or state/province of sites. Entries require
+proper spelling, for example, use "Quebec" or "United States Of America"
+and not "arizona". Not all localities are available; check
+\code{\link[=get_search_params]{get_search_params()}} for availability of your place of interest.}
+
 \item{minLat}{Minimum latitude of sites, in decimal degrees (WGS84)}
 
 \item{maxLat}{Maximum latitude of sites, in decimal degrees (WGS84)}
@@ -34,9 +40,11 @@ look like "Swetnam", "Swetnam, T", or "Swetnam, T.W.".  See
 
 \item{maxElev}{Maximum elevation of sites, in meters}
 
-\item{earliestYear}{Lower dated bound of sites. Use calendar years CE (negative for BCE)}
+\item{earliestYear}{Lower dated bound of sites. Use calendar years CE
+(negative for BCE)}
 
-\item{latestYear}{Upper dated bound of sites. Use calendar years CE (negative for BCE)}
+\item{latestYear}{Upper dated bound of sites. Use calendar years CE (negative
+for BCE)}
 
 \item{species}{Four-letter species code for tree species. See
 \code{\link[=get_search_params]{get_search_params()}} to find the proper code}
