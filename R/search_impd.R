@@ -17,6 +17,10 @@
 #'
 #' # Find all sites with Gambel oak
 #' search_impd(species = "QUGA")
+#'
+#' # Retrieve sites from Oregon and Washington states
+#' or_wa <- rbind(search_impd(location = "Oregon"),
+#'                search_impd(location = "Washington"))
 
 search_impd <- function(investigators = NULL,
                         location = NULL,
