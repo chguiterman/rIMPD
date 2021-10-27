@@ -1,4 +1,5 @@
 ---
+always_allow_html: yes
 output: github_document
 ---
 
@@ -11,6 +12,15 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
+library(rIMPD)
+library(sf)
+library(tidyverse)
+library(lubridate)
+library(leaflet)
+library(htmltools)
+library(mapview)
+impd_meta <- search_impd() %>%
+    st_as_sf(coords = c("longitude", "latitude"), crs=4326)
 ```
 
 # rIMPD
@@ -19,6 +29,49 @@ knitr::opts_chunk$set(
 [![R build status](https://github.com/chguiterman/rIMPD/workflows/R-CMD-check/badge.svg)](https://github.com/chguiterman/rIMPD/actions)
 <!-- badges: end -->
 
-The goal of rIMPD is to enable fast and easy exploration of publicly-available tree-ring fire history data in R
+The goal of rIMPD is to enable fast and easy exploration of publicly-available tree-ring fire history data in R. Currently rIMPD is focused on the North American tree-ring records, but could be expanded in the future.
+
+
+```{r, echo=FALSE}
+title <- paste0(
+  tags$b("The North American tree-ring IMPD")
+)
+cred <- paste0(
+  tags$caption(str_glue("Compiled {format(now(), '%m/%d/%Y')}"))
+)
+pops <- paste0(
+  tags$b("Site name: "), ifelse(!is.na(impd_meta$siteName),
+                                impd_meta$siteName, ""), "<br>",
+  tags$b("Study code: "), impd_meta$studyCode, "<br>",
+  tags$b("Investigators: "), impd_meta$investigators, "<br>",
+  tags$b("Timespan: "), ifelse(!is.na(impd_meta$first_year),
+                               paste0(impd_meta$first_year, "-", impd_meta$last_year),
+                               ""), "<br>",
+  tags$b("Year contributed: "), impd_meta$contr_year, "<br>",
+  tags$b("url: "), ifelse(!is.na(impd_meta$url), 
+                          impd_meta$url, "")
+)
+
+leaflet(impd_meta) %>%
+  addControl(title, position = "topright") %>% 
+  addControl(cred, position = "bottomleft") %>% 
+  addProviderTiles(providers$Esri.WorldImagery, "Satellite") %>%
+  addProviderTiles(providers$Thunderforest.Outdoors,
+                   options = tileOptions(apikey = 'a9d0362ca8e5483a98c4653356dd7661'),
+                   group = "Topography") %>%
+  addCircleMarkers(radius = 4,
+                   fillOpacity = .2,
+                   weight = 1,
+                   fillColor = "yellow",
+                   color = "yellow",
+                   popup = pops) %>%
+  addLayersControl(
+    baseGroups = c("Satellite", "Topography"),
+    options = layersControlOptions(collapsed = FALSE)
+  ) %>%
+  fitBounds(-125, 15, -73, 51.5)
+
+```
+
 
 The package is not currently on CRAN.
