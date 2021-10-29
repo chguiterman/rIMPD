@@ -16,7 +16,6 @@ knitr::opts_chunk$set(
   fig.align = "center"
 )
 options(rmarkdown.html_vignette.check_title = FALSE)
-library(pander)
 ```
 
 ## Overview
