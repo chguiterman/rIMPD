@@ -1,0 +1,159 @@
+---
+title: "Introduction"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction-to-rIMPD}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  message=FALSE,
+  warning=FALSE,
+  fig.align = "center"
+)
+options(rmarkdown.html_vignette.check_title = FALSE)
+library(pander)
+```
+
+## Overview
+
+`rIMPD` provides basic functions to explore the data stored on the International Multiproxy Paleofire Database (IMPD), hosted by the National Centers for Environmental Information under the US National Oceanic and Atmospheric Administration. The IMPD falls under the World Data Service for Paleoclimatology (WDS-Paleo): <https://www.ncei.noaa.gov/products/paleoclimatology>. The IMPD has become the *defacto* warehouse for publicly-accessible tree-ring fire history data.
+
+Our goal with `rIMPD` is to enhance the search and exploration capabilities for the IMPD by directly integrating metadata and fire-history files with the R computing environment. Raw tree-ring files are stored in the IMPD as fire history exchange (.fhx) format files. The R package `burnr` provides tools to read, write, visualize, and analyze FHX files (<https://ltrr-arizona-edu.github.io/burnr/>). `rIMPD` allows for users to retrieve FHX files and use `burnr` for all other operations, helping to streamline analyses. 
+
+The `rIMPD` package consists of two primary functions:
+
+* `search_impd()` to allow users to direct searches of the IMPD based on a range of parameters.
+* `get_impd_fhx()` to help retrieve the FHX files from sites discovered in `search_impd()`.
+
+## Search the IMPD
+
+The `search_impd()` function allows for several parameters to help select sites stored on the IMPD. Running it blank (ie. `search_impd()`) will retrieve the full dataset of the North American IMPD. The function accesses the NCEI paleo API, and returns a data frame of sites fitting the search parameter(s). The data frame includes 15 columns with various metadata attributes describing the sites. The last column, url, will link to the project page on the NCEI server.
+
+```{r, asis=TRUE, echo=FALSE}
+# Column names from search_impd()
+colnames(rIMPD::search_impd("Touchan"))
+```
+
+Here, we'll show examples of applying different search parameters to find data on the IMPD
+
+### Species
+
+Adding a specific code as a "species" parameter will retrieve all sites for which that species is listed for a site. To see the list of available species and their associated codes, use the `get_search_params()` function:
+
+```{r}
+library(rIMPD)
+
+get_search_params("species")
+```
+
+Note that this will list all tree species available in the *global* IMPD, and therefore searching some of the listed species will return an error because they do not occur in North America.
+
+We'll start by searching for fire history that include Gambel oak (*Quercus gambellii*) or "QUGA". 
+
+```{r}
+quga_meta <- search_impd(species = "QUGA")
+
+head(quga_meta)
+```
+
+This search retrieved `r nrow(quga_meta)` sites in which the investigators included "QUGA" as a species. 
+
+Sites can be mapped via various R packages. My favorite is `sf`, which integrates with `ggplot2` and provides many GIS tools. The latitude and longitude coordinates provided by the IMPD are in WGS84 format (designated by 'crs=4326').
+
+```{r, fig.align='center'}
+library(sf)
+library(dplyr)
+library(ggplot2)
+
+quga_meta_sf <- quga_meta %>%
+    st_as_sf(coords = c("longitude", "latitude"), crs=4326) 
+
+four_corners <- spData::us_states %>% 
+  filter(NAME %in% c("Arizona", "Colorado", "New Mexico", "Utah")) 
+
+ggplot() +
+  geom_sf(data = four_corners) +
+  geom_sf(data = quga_meta_sf, shape = 21, fill = "purple") +
+  coord_sf() +
+  theme_void()
+
+```
+
+### Location
+
+The "location" parameter in `search_impd()` allows one to find sites by country (Canada, United States, or Mexico) or by state/province. Check for IMPD-available locations with `get_search_params("location")`.
+
+```{r}
+az_impd <- search_impd(location = "Arizona") %>%
+    st_as_sf(coords = c("longitude", "latitude"), crs=4326)
+
+ggplot() +
+  geom_sf(data = filter(four_corners, NAME == "Arizona")) +
+  geom_sf(data = az_impd, shape = 21, fill = "purple") +
+  coord_sf() +
+  theme_void()
+```
+
+For other locations not defined by country or state/province boundaries, you can use a polygon to extract IMPD data and filter sites that lay outside of the polygon boundaries. We're describe this using county data from `spData::us_states` for simplicity, but you can use `sf` or other geospatial packages in R to read in a variety of file types
+
+```{r, fig.width=5}
+library(maps)
+crook_OR <- st_as_sf(map("county", plot=FALSE, fill=TRUE)) %>% 
+  subset(grepl("oregon,crook", .$ID))
+
+# Get bounds of polygon
+crook_OR_bbox <- st_bbox(crook_OR)
+
+# search within the bounds
+crook_srch <- search_impd(minLon = crook_OR_bbox[1],
+                          minLat = crook_OR_bbox[2],
+                          maxLon = crook_OR_bbox[3],
+                          maxLat = crook_OR_bbox[4],
+                          ) %>% 
+  st_as_sf(coords = c("longitude", "latitude"), crs=4326)
+
+ggplot() +
+  geom_sf(data = crook_OR) +
+  geom_sf(data = crook_srch) +
+  coord_sf(xlim = c(-121.5, -119.5), ylim = c(43.5, 45))
+
+# Two sites fall outside the polygon, but within the bounding box. 
+# Spatially filter these out
+crook_impd <- crook_srch %>% 
+  filter(st_intersects(., crook_OR, sparse=FALSE))
+
+ggplot() +
+  geom_sf(data = crook_OR) +
+  geom_sf(data = crook_impd) +
+  coord_sf(xlim=c(-121.5, -119.5), ylim=c(43.5, 45))
+
+```
+
+Other parameter options in `search_IMPD()` allow you to search within elevational limits ("minElev" & "maxElev"), by year ("earliestYear" & "latestYear"), or by investigator (see the list of IMPD contributors via `get_search_params("investigator")`). Combination of search parameters act to further refine search results.
+
+## Retrieve FHX files
+
+The function `get_impd_fhx()` directs R to read the FHX file associated with an individual site. these are housed on the NCEI ftp server, and depending on the size of the FHX and your internet speed, could take some time to download. Use the "studyCode" column to select a site for download.
+```{r}
+quga_fhx1 <- get_impd_fhx(quga_meta[1, ]$studyCode)
+
+head(quga_fhx1)
+```
+
+The resulting data frame is an "fhx object" that originated from the `read_fhx()` function in the `burnr` library. `burnr` provides a suite of analyses and graphical tools for fire history. See <https://ltrr-arizona-edu.github.io/burnr/> for more information.
+
+```{r, fig.width=8}
+library(burnr)
+
+plot_demograph(quga_fhx1, 
+               composite_rug = TRUE,
+               plot_legend = TRUE)
+```
+
+## Final note
+Note that if you search the IMPD a lot, you might find inconsistent results. For one, the IMPD is constantly being updated with new sites and thus growing. But I have run into issues where not all sites will appear in a search that had been showing up previously. This is not a issue in `rIMPD`, rather it has to do with the NCEI API being accessed by `rIMPD`. Should you have trouble with the search, or notice data errors in the results, then email "paleo [at] noaa.gov". They've been very helpful in building this package and are always working to improve the API and paleo resources.
