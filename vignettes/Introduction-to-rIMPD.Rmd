@@ -19,6 +19,12 @@ knitr::opts_chunk$set(
   eval = NOT_CRAN
 )
 options(rmarkdown.html_vignette.check_title = FALSE)
+library(sf)
+library(dplyr)
+library(ggplot2)
+library(rIMPD)
+library(maps)
+library(burnr)
 ```
 
 ## Overview
