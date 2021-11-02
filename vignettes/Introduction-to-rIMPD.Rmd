@@ -8,12 +8,15 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
+NOT_CRAN <- identical(tolower(Sys.getenv("NOT_CRAN")), "true") # https://github.com/globalgov/qData/commit/4a9af245d2e9827af973378e9f8b63b604c48e38
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   message=FALSE,
   warning=FALSE,
-  fig.align = "center"
+  fig.align = "center",
+  purl = NOT_CRAN,
+  eval = NOT_CRAN
 )
 options(rmarkdown.html_vignette.check_title = FALSE)
 ```
@@ -33,7 +36,7 @@ The `rIMPD` package consists of two primary functions:
 
 The `search_impd()` function allows for several parameters to help select sites stored on the IMPD. Running it blank (ie. `search_impd()`) will retrieve the full dataset of the North American IMPD. The function accesses the NCEI paleo API, and returns a data frame of sites fitting the search parameter(s). The data frame includes 15 columns with various metadata attributes describing the sites. The last column, url, will link to the project page on the NCEI server.
 
-```{r, asis=TRUE, echo=FALSE}
+```{r, asis=TRUE, echo=FALSE, eval=NOT_CRAN}
 # Column names from search_impd()
 colnames(rIMPD::search_impd("Touchan"))
 ```
@@ -44,7 +47,7 @@ Here, we'll show examples of applying different search parameters to find data o
 
 Adding a specific code as a "species" parameter will retrieve all sites for which that species is listed for a site. To see the list of available species and their associated codes, use the `get_search_params()` function:
 
-```{r}
+```{r, eval=NOT_CRAN}
 library(rIMPD)
 
 get_search_params("species")
@@ -54,7 +57,7 @@ Note that this will list all tree species available in the *global* IMPD, and th
 
 We'll start by searching for fire history that include Gambel oak (*Quercus gambellii*) or "QUGA". 
 
-```{r}
+```{r, eval=NOT_CRAN}
 quga_meta <- search_impd(species = "QUGA")
 
 head(quga_meta)
@@ -64,7 +67,7 @@ This search retrieved `r nrow(quga_meta)` sites in which the investigators inclu
 
 Sites can be mapped via various R packages. My favorite is `sf`, which integrates with `ggplot2` and provides many GIS tools. The latitude and longitude coordinates provided by the IMPD are in WGS84 format (designated by 'crs=4326').
 
-```{r, fig.align='center'}
+```{r, fig.align='center', eval=NOT_CRAN}
 library(sf)
 library(dplyr)
 library(ggplot2)
@@ -87,7 +90,7 @@ ggplot() +
 
 The "location" parameter in `search_impd()` allows one to find sites by country (Canada, United States, or Mexico) or by state/province. Check for IMPD-available locations with `get_search_params("location")`.
 
-```{r}
+```{r, eval=NOT_CRAN}
 az_impd <- search_impd(location = "Arizona") %>%
     st_as_sf(coords = c("longitude", "latitude"), crs=4326)
 
@@ -100,7 +103,7 @@ ggplot() +
 
 For other locations not defined by country or state/province boundaries, you can use a polygon to extract IMPD data and filter sites that lay outside of the polygon boundaries. We're describe this using county data from `spData::us_states` for simplicity, but you can use `sf` or other geospatial packages in R to read in a variety of file types
 
-```{r, fig.width=5}
+```{r, fig.width=5, eval=NOT_CRAN}
 library(maps)
 crook_OR <- st_as_sf(map("county", plot=FALSE, fill=TRUE)) %>% 
   subset(grepl("oregon,crook", .$ID))
@@ -138,7 +141,7 @@ Other parameter options in `search_IMPD()` allow you to search within elevationa
 ## Retrieve FHX files
 
 The function `get_impd_fhx()` directs R to read the FHX file associated with an individual site. these are housed on the NCEI ftp server, and depending on the size of the FHX and your internet speed, could take some time to download. Use the "studyCode" column to select a site for download.
-```{r}
+```{r, eval=NOT_CRAN}
 quga_fhx1 <- get_impd_fhx(quga_meta[1, ]$studyCode)
 
 head(quga_fhx1)
@@ -146,7 +149,7 @@ head(quga_fhx1)
 
 The resulting data frame is an "fhx object" that originated from the `read_fhx()` function in the `burnr` library. `burnr` provides a suite of analyses and graphical tools for fire history. See <https://ltrr-arizona-edu.github.io/burnr/> for more information.
 
-```{r, fig.width=8}
+```{r, fig.width=8, eval=NOT_CRAN}
 library(burnr)
 
 plot_demograph(quga_fhx1, 
