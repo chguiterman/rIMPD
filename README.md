@@ -28,6 +28,9 @@ ggplot() +
   geom_sf(data = spData::world) +
   geom_sf(data = all_sites, color = "purple") +
   coord_sf(xlim=c(-165, -50), ylim=c(15, 70)) +
+  labs(title = "North American Tree-Ring Records on the IMPD",
+       caption = paste0("Data current as of ", lubridate::today())
+       ) +
   theme_void()
 ```
 
@@ -36,7 +39,8 @@ ggplot() +
 The tree-ring data associated with each site can be obtained directly:
 
 ``` r
-fhx <- get_impd_fhx(all_sites[10, ]$studyCode)
+site_to_get <- all_sites[10, ]$studyCode
+fhx <- get_impd_fhx(site_to_get)
 ```
 
 and analyzed with tools from the `burnr` library, for example:
@@ -45,7 +49,16 @@ and analyzed with tools from the `burnr` library, for example:
 library(burnr)
 plot_demograph(fhx, 
                composite_rug = TRUE,
-               plot_legend = TRUE)
+               plot_legend = TRUE) +
+  labs(title = all_sites[10, ]$siteName, 
+       subtitle = paste0("Collected by: ", all_sites[10, ]$investigators),
+       caption = "Tree-ring fire history plot. Each horizontal line represents the life-span
+       of a tree, with vertical tick marks denoting  fire scars recorded in the tree rings. 
+       At bottom, vertical dashes indicate 'widespread' fires that were recorded on 25% of 
+       the trees.")
 ```
 
 <img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
+
+Funding for `rIMPD` was provided by the USGS Community for Data
+Integration <https://www.usgs.gov/centers/cdi>
