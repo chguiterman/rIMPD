@@ -29,7 +29,7 @@ library(burnr)
 
 ## Overview
 
-`rIMPD` provides basic functions to explore the data stored on the International Multiproxy Paleofire Database (IMPD), hosted by the National Centers for Environmental Information under the US National Oceanic and Atmospheric Administration. The IMPD falls under the World Data Service for Paleoclimatology (WDS-Paleo): <https://www.ncei.noaa.gov/products/paleoclimatology>. The IMPD has become the *defacto* warehouse for publicly-accessible tree-ring fire history data.
+`rIMPD` provides basic functions to explore and extract the data stored on the International Multiproxy Paleofire Database (IMPD), hosted by the National Centers for Environmental Information under the US National Oceanic and Atmospheric Administration. The IMPD falls under the World Data Service for Paleoclimatology (WDS-Paleo): <https://www.ncei.noaa.gov/products/paleoclimatology>. The IMPD has become the *defacto* warehouse for publicly-accessible tree-ring fire history data.
 
 Our goal with `rIMPD` is to enhance the search and exploration capabilities for the IMPD by directly integrating metadata and fire-history files with the R computing environment. Raw tree-ring files are stored in the IMPD as fire history exchange (.fhx) format files. The R package `burnr` provides tools to read, write, visualize, and analyze FHX files (<https://ltrr-arizona-edu.github.io/burnr/>). `rIMPD` allows for users to retrieve FHX files and use `burnr` for all other operations, helping to streamline analyses. 
 

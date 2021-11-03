@@ -27,7 +27,9 @@ Imports:
     burnr,
     dplyr,
     magrittr,
+    maps,
     glue,
+    ggplot2,
     rlang,
     httr,
     jsonlite,
@@ -35,6 +37,8 @@ Imports:
     lubridate,
     tidyr,
     stringr,
+    sf,
+    spData,
     tibble,
     stats
 Encoding: UTF-8
