@@ -25,18 +25,21 @@ library(ggplot2)
 library(rIMPD)
 library(maps)
 library(burnr)
+quga_meta <- read.csv("quga_meta.csv", row.names = 1)
 ```
 
 ## Overview
 
 `rIMPD` provides basic functions to explore and extract the data stored on the International Multiproxy Paleofire Database (IMPD), hosted by the National Centers for Environmental Information under the US National Oceanic and Atmospheric Administration. The IMPD falls under the World Data Service for Paleoclimatology (WDS-Paleo): <https://www.ncei.noaa.gov/products/paleoclimatology>. The IMPD has become the *defacto* warehouse for publicly-accessible tree-ring fire history data.
 
-Our goal with `rIMPD` is to enhance the search and exploration capabilities for the IMPD by directly integrating metadata and fire-history files with the R computing environment. Raw tree-ring files are stored in the IMPD as fire history exchange (.fhx) format files. The R package `burnr` provides tools to read, write, visualize, and analyze FHX files (<https://ltrr-arizona-edu.github.io/burnr/>). `rIMPD` allows for users to retrieve FHX files and use `burnr` for all other operations, helping to streamline analyses. 
+Our goal with `rIMPD` is to enhance the search and exploration capabilities for the IMPD by directly integrating metadata and fire-history files with the R computing environment. Raw tree-ring files are stored in the IMPD as fire history exchange (.fhx) format files. The R package `burnr` (Malevich et al. 2018) provides tools to read, write, visualize, and analyze FHX files (see <https://ltrr-arizona-edu.github.io/burnr/> for guidance). `rIMPD` allows for users to retrieve FHX files and use `burnr` for all other operations, helping to streamline analyses. 
 
-The `rIMPD` package consists of two primary functions:
+Finding and retrieving tree-ring fire history data using `rIMPD` requires only two functions:
 
 * `search_impd()` to allow users to direct searches of the IMPD based on a range of parameters.
 * `get_impd_fhx()` to help retrieve the FHX files from sites discovered in `search_impd()`.
+
+The package provides various functions to support these operations, as described below.
 
 ## Search the IMPD
 
@@ -107,7 +110,7 @@ ggplot() +
   theme_void()
 ```
 
-For other locations not defined by country or state/province boundaries, you can use a polygon to extract IMPD data and filter sites that lay outside of the polygon boundaries. We're describe this using county data from `spData::us_states` for simplicity, but you can use `sf` or other geospatial packages in R to read in a variety of file types
+For other locations not defined by country or state/province boundaries, you can upload or otherwise obtain a polygon to extract IMPD data for sites within the polygon boundaries. As an example, we obtain polygons for each county in the United States from the `maps` library in the code below, and filter specifically for Crook County in Oregon. Note that we need to convert the county polygons into an `sf` object for ease of use.
 
 ```{r, fig.width=5, eval=NOT_CRAN}
 library(maps)
@@ -165,3 +168,8 @@ plot_demograph(quga_fhx1,
 
 ## Final note
 Note that if you search the IMPD a lot, you might find inconsistent results. For one, the IMPD is constantly being updated with new sites and thus growing. But I have run into issues where not all sites will appear in a search that had been showing up previously. This is not a issue in `rIMPD`, rather it has to do with the NCEI API being accessed by `rIMPD`. Should you have trouble with the search, or notice data errors in the results, then email "paleo [at] noaa.gov". They've been very helpful in building this package and are always working to improve the API and paleo resources.
+
+## Reference
+
+Malevich, S.B., Guiterman, C.H., and Margolis, E.Q (2018). `burnr`: Fire History Analysis
+  and Graphics in R. Dendrochronologia 49 (June): 9–15. <https://doi.org/10.1016/j.dendro.2018.02.005>
