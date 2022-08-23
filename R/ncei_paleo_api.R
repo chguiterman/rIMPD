@@ -24,7 +24,7 @@
 #'   [get_search_params()] to find the proper code
 #'
 #' @importFrom magrittr %>%
-#' @importFrom httr GET parse_url build_url user_agent http_type content
+#' @importFrom httr GET parse_url build_url user_agent http_type content status_code stop_for_status
 #' @importFrom jsonlite fromJSON
 #' @importFrom rlang abort
 #' @importFrom glue glue
@@ -58,7 +58,7 @@ ncei_paleo_api <- function(investigators = NULL,
     pos <- which(loc_df == location, arr.ind = TRUE)
     if (length(pos) == 0) {
       abort(
-      glue("Location entry did not match IMPD search parameters or
+        glue("Location entry did not match IMPD search parameters or
       available locations. See the help menu for guidance"))
     }
     if (any(pos[, 2] == 1)) {
@@ -91,23 +91,21 @@ ncei_paleo_api <- function(investigators = NULL,
   )
   search_url <- build_url(url)
   resp <- GET(url, user_agent("https://github.com/chguiterman/rIMPD"))
-  if (http_type(resp) != "application/json") {
-    stop("API did not return json", call. = FALSE)
+
+  if (status_code(resp) == 204) {
+    stop("The search yielded no results, try different parameters in your next search", call. = FALSE)
   }
 
+  stop_for_status(resp, "connect to NCEI servers")
+
   parsed <- fromJSON(content(resp, "text", encoding = "UTF-8"),
-                               simplifyDataFrame = TRUE)
-  if (length(parsed$study) == 0) {
-    abort(glue("This search returned no results\ncheck the url: {search_url}"))
-  }
-  else {
-    structure(
-      list(
-        url = search_url,
-        content = parsed,
-        response = resp
-      ),
-      rIMPD = "ncei_api"
-    )
-  }
+                     simplifyDataFrame = TRUE)
+  structure(
+    list(
+      url = search_url,
+      content = parsed,
+      response = resp
+    ),
+    rIMPD = "ncei_api"
+  )
 }

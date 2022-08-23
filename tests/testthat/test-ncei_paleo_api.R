@@ -7,5 +7,5 @@ test_that("URL is properly built and functions online", {
 
 test_that("Error message works for bad search", {
   expect_error(ncei_paleo_api(investigators = "FooBar"),
-               "This search returned no results")
+               "The search yielded no results, try different parameters in your next search")
 })
