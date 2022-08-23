@@ -4,11 +4,11 @@ spp <- get_search_params("species")
 
 
 test_that("Investigator search results are a character string", {
-  expect_type(invs, "character")
+  expect_type(invs$investigator, "character")
 })
 
 test_that("There are many investigators in the search", {
-  expect_gte(length(invs), 251)
+  expect_gte(nrow(invs), 251)
 })
 
 test_that("Species returns a data frame", {
