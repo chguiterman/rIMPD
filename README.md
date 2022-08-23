@@ -7,10 +7,26 @@
 
 [![R build
 status](https://github.com/chguiterman/rIMPD/workflows/R-CMD-check/badge.svg)](https://github.com/chguiterman/rIMPD/actions)
+
 <!-- badges: end -->
 
-The goal of rIMPD is to enable fast and easy exploration of
-publicly-available tree-ring fire history data in R.
+Explore North American Fire-Scar Records from the International
+Multiproxy Paleofire Database
+
+`rIMPD` provides basic functions to explore and extract tree-ring data
+stored on the International Multiproxy Paleofire Database (IMPD), hosted
+by the National Centers for Environmental Information under the US
+National Oceanic and Atmospheric Administration. The IMPD falls under
+the World Data Service for Paleoclimatology (WDS-Paleo):
+<https://www.ncei.noaa.gov/products/paleoclimatology>, and has become
+the *defacto* warehouse for publicly-accessible tree-ring fire history
+data.
+
+For an overview of the package with some useful examples, run the
+following code:
+`vignette(topic = "Introduction-to-rIMPD", package = "rIMPD")`
+
+## Usage
 
 Using `rIMPD`, you can discover the fire history sites across the North
 American continent:
@@ -43,7 +59,8 @@ site_to_get <- all_sites[10, ]$studyCode
 fhx <- get_impd_fhx(site_to_get)
 ```
 
-and analyzed with tools from the `burnr` library, for example:
+and analyzed with tools from the `burnr` library (Malevich et al. 2018),
+for example:
 
 ``` r
 library(burnr)
@@ -62,3 +79,25 @@ plot_demograph(fhx,
 
 Funding for `rIMPD` was provided by the USGS Community for Data
 Integration <https://www.usgs.gov/centers/cdi>
+
+## Disclaimer
+
+This software is in the public domain because it contains materials that
+originally came from the U.S. Geological Survey, an agency of the United
+States Department of Interior. For more information, see the official
+USGS copyright policy.
+
+Although this software program has been used by the U.S. Geological
+Survey (USGS), no warranty, expressed or implied, is made by the USGS or
+the U.S. Government as to the accuracy and functioning of the program
+and related program material nor shall the fact of distribution
+constitute any such warranty, and no responsibility is assumed by the
+USGS in connection therewith.
+
+This software is provided “AS IS.”
+
+## Reference
+
+Malevich, S.B., Guiterman, C.H., and Margolis, E.Q (2018). `burnr`: Fire
+History Analysis and Graphics in R. Dendrochronologia 49 (June): 9–15.
+<https://doi.org/10.1016/j.dendro.2018.02.005>
