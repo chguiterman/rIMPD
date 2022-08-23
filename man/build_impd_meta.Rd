@@ -9,11 +9,34 @@ build_impd_meta(api)
 \arguments{
 \item{api}{Resulting object from \code{\link[=ncei_paleo_api]{ncei_paleo_api()}}}
 }
+\value{
+A data frame of search results from the North American IMPD,
+including: \itemize{
+\item{"siteName" -- name of the site}
+\item{"studyCode" -- unique site identifier as defined by the IMPD}
+\item{"investigators" -- list of investigators for the study site}
+\item{"first_year" -- earliest year of the tree-ring data}
+\item{"last_year" -- latest year of the tree-ring data}
+\item{"latitude" and "longitude"  -- site coordinates}
+\item{"elevation" -- site elevation in meters above sea level}
+\item{"species" -- tree species codes}
+\item{"reference" -- literature citation for site data}
+\item{"doi" -- Digital Object Identifier for the site data}
+\item{"contr_year" -- the year the site data were contriuted to the IMPD}
+\item{"NOAAStudyId" -- unique study identifier used by NOAA}
+\item{"NOAASiteId" -- unique site identifier used by NOAA}
+\item{"url" -- site landing page on the NCEI server}
+}
+}
 \description{
-This function extracts desired information form the search results to the
-IMPD and returns a tidy data frame of the results
+This function extracts desired information from the search results to the
+International Multiproxy Paleofire Database (IMPD) and returns a tidy data
+frame of the results
 }
 \examples{
 api <- ncei_paleo_api("Swetnam")
 meta <- build_impd_meta(api)
+}
+\seealso{
+\code{\link[=search_impd]{search_impd()}}
 }

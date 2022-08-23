@@ -1,9 +1,28 @@
 #' Assemble tidy table from IMPD search results
 #'
-#' This function extracts desired information form the search results to the
-#' IMPD and returns a tidy data frame of the results
+#' This function extracts desired information from the search results to the
+#' International Multiproxy Paleofire Database (IMPD) and returns a tidy data
+#' frame of the results
 #'
 #' @param api Resulting object from [ncei_paleo_api()]
+#'
+#' @return A data frame of search results from the North American IMPD,
+#'   including: \itemize{
+#'   \item{"siteName" -- name of the site}
+#'   \item{"studyCode" -- unique site identifier as defined by the IMPD}
+#'   \item{"investigators" -- list of investigators for the study site}
+#'   \item{"first_year" -- earliest year of the tree-ring data}
+#'   \item{"last_year" -- latest year of the tree-ring data}
+#'   \item{"latitude" and "longitude"  -- site coordinates}
+#'   \item{"elevation" -- site elevation in meters above sea level}
+#'   \item{"species" -- tree species codes}
+#'   \item{"reference" -- literature citation for site data}
+#'   \item{"doi" -- Digital Object Identifier for the site data}
+#'   \item{"contr_year" -- the year the site data were contriuted to the IMPD}
+#'   \item{"NOAAStudyId" -- unique study identifier used by NOAA}
+#'   \item{"NOAASiteId" -- unique site identifier used by NOAA}
+#'   \item{"url" -- site landing page on the NCEI server}
+#'   }
 #'
 #' @importFrom magrittr %>%
 #' @importFrom rlang .data
@@ -12,6 +31,8 @@
 #' @importFrom purrr map map_dbl map_chr pluck
 #' @importFrom lubridate year
 #' @importFrom stringr str_c
+#'
+#' @seealso [search_impd()]
 #'
 #' @export
 #' @examples

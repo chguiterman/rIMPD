@@ -2,9 +2,9 @@
 % Please edit documentation in R/get_search_params.R
 \name{get_search_params}
 \alias{get_search_params}
-\title{Extract IMPD search parameters for \code{investigators} and \code{species}}
+\title{Extract IMPD search parameters for \code{investigators}, \code{species}, and \code{location}}
 \usage{
-get_search_params(output = c("investigators", "location", "species"))
+get_search_params(output)
 }
 \arguments{
 \item{output}{Three data sets are available: "investigators" (the default),
@@ -12,7 +12,8 @@ get_search_params(output = c("investigators", "location", "species"))
 }
 \description{
 Retrieve the updated store of contributor names, site locations, and tree
-species to help specify IMPD searches.
+species to help specify searches of the International Multiproxy
+Paleofire Database (IMPD).
 }
 \note{
 The list of investigators names also includes those who have

@@ -1,6 +1,7 @@
 #' IMPD records search
 #'
-#' Query the IMPD for North American tree-ring fire-scar records
+#' Query the International Multiproxy
+#' Paleofire Database (IMPD) for North American tree-ring fire-scar records
 #'
 #' @param investigators Name of investigator listed by the IMPD. The format can
 #'   look like "Swetnam", "Swetnam, T", or "Swetnam, T.W.".  See
@@ -28,7 +29,9 @@
 #' @importFrom rlang abort
 #' @importFrom glue glue
 #'
-#' @seealso [get_search_params()]
+#' @return A list-object of metadata from the NOAA National Centers for Environmental Information (NCEI).
+#'
+#' @seealso [get_search_params()] [search_impd()]
 #'
 #' @export
 #'

@@ -1,7 +1,8 @@
-#' Extract IMPD search parameters for `investigators` and `species`
+#' Extract IMPD search parameters for `investigators`, `species`, and `location`
 #'
 #' Retrieve the updated store of contributor names, site locations, and tree
-#' species to help specify IMPD searches.
+#' species to help specify searches of the International Multiproxy
+#' Paleofire Database (IMPD).
 #'
 #' @param output Three data sets are available: "investigators" (the default),
 #'   "location", and "species"
@@ -18,6 +19,8 @@
 #' @importFrom tibble as_tibble
 #' @importFrom stats setNames
 #' @importFrom dplyr filter
+#' @importFrom rlang abort
+#' @importFrom glue glue
 #'
 #' @export
 #'
@@ -28,13 +31,25 @@
 #' # Retrieve a data frame of species codes
 #' get_search_params("species")
 
-get_search_params <- function(output = c("investigators", "location", "species")) {
+get_search_params <- function(output) {
+  if (missing(output)) {
+    abort(
+      glue("Please provide one of c('investigators', 'species', 'location')")
+    )
+  }
+  if (length(output) > 1) {
+    abort(
+      glue("Please provide only one of c('investigators', 'species', 'location')")
+    )
+  }
+
   resp <- GET("https://www.ncdc.noaa.gov/paleo-search/study/params.json")
 
   params <- fromJSON(content(resp, "text", encoding = "UTF-8"),
                      simplifyDataFrame = TRUE)
 
-  investigators <- params[["investigators"]][["NOAA"]][["12"]]
+  investigators <- as_tibble(params[["investigators"]][["NOAA"]][["12"]]) %>%
+    setNames("investigator")
 
   species_list <- str_split(params[["species"]][["NOAA"]][["12"]], ":")
   species_df <- do.call(rbind, species_list) %>%
@@ -50,11 +65,9 @@ get_search_params <- function(output = c("investigators", "location", "species")
                     NA_locs_list[lengths(NA_locs_list) > 3]
                     ) %>%
     as_tibble(.name_repair = "minimal") %>%
-    setNames(c("setting", "continent", "country", "state")) %>%
+    setNames(c("setting", "continent", "country", "state_province")) %>%
     select(3:4) %>%
     filter(.data$country != "Central America")
-
-  output <- match.arg(output)
 
   if (output == "investigators") {
     out <- investigators

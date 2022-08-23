@@ -49,13 +49,17 @@ for BCE)}
 \item{species}{Four-letter species code for tree species. See
 \code{\link[=get_search_params]{get_search_params()}} to find the proper code}
 }
+\value{
+A list-object of metadata from the NOAA National Centers for Environmental Information (NCEI).
+}
 \description{
-Query the IMPD for North American tree-ring fire-scar records
+Query the International Multiproxy
+Paleofire Database (IMPD) for North American tree-ring fire-scar records
 }
 \examples{
 # Search the IMPD for Tom Swetnam's contributions
 swetnam_search <- ncei_paleo_api(investigators = "Swetnam")
 }
 \seealso{
-\code{\link[=get_search_params]{get_search_params()}}
+\code{\link[=get_search_params]{get_search_params()}} \code{\link[=search_impd]{search_impd()}}
 }
