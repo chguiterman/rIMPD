@@ -1,6 +1,6 @@
 Package: rIMPD
 Title: Explore North American Fire-Scar Records from the International Multiproxy Paleofire Database
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: 
     person(given = "Chris",
            family = "Guiterman",
@@ -8,15 +8,15 @@ Authors@R:
            email = "chguiterman@arizona.edu",
            comment = c(ORCID = "0000-0002-9706-9332"))
 Description: Tree-ring fire histories are shared publicly on the IMPD,
-    a web-based resource hosted by NOAA’s World Data Service for 
-    Paleoclimatology (WDS-Paleo). {rIMPD} enables fast and easy IMPD 
+    a web-based resource hosted by NOAA’s NCEI and the World Data Service 
+    for Paleoclimatology (WDS-Paleo). {rIMPD} enables fast and easy IMPD 
     exploration via search calls to the IMPD API, thus requiring an 
     internet connection to work. Search results return tidy metadata 
     and raw tree-ring fire history data, which can be visualized and 
     analyzed using the {burnr} R package.
 URL: https://github.com/chguiterman/rIMPD
 BugReports: https://github.com/chguiterman/rIMPD/issues
-License: AGPL-3
+License: CCO
 Depends:
     R (>= 4.0)
 Suggests:
