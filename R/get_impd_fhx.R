@@ -35,9 +35,10 @@
 get_impd_fhx <- function(studyCode) {
   if (length(studyCode) > 1) stop("Please supply only 1 study code")
 
-  file_url <- parse_url("ftp://ftp.ncdc.noaa.gov/")
-  file_url$scheme <- "ftp"
+  file_url <- parse_url("https://www.ncei.noaa.gov/")
+  file_url$scheme <- "https"
   file_url$path <- str_glue("pub/data/paleo/firehistory/firescar/northamerica/",
                             "{tolower(studyCode)}.fhx")
   read_fhx(build_url(file_url))
 }
+
